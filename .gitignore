@@ -27,14 +27,18 @@ wheels/
 *.egg
 .pytest_cache/
 
-# Model Weights & Checkpoints (Do not commit large checkpoint files)
+# Model Weights & Checkpoints (Large files tracked via Git LFS)
 *.pt
-*.pth
 *.ckpt
 *.bin
 *.onnx
 *.h5
 *.safetensors
+*.pth
+!backend/checkpoints/efficientnet_b0/efficientnet_b0_best_seed42.pth
+!backend/checkpoints/deit_tiny/deit_tiny_best_seed42.pth
+!backend/checkpoints/cnn_vit_concat/cnn_vit_concat_best_seed42.pth
+!backend/checkpoints/attention_fusion/attention_cnn_vit_best_seed42.pth
 !backend/checkpoints/**/README.md
 !backend/checkpoints/**/.gitkeep
 
