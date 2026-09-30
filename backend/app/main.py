@@ -29,6 +29,21 @@ app.include_router(models.router, prefix=settings.API_V1_STR)     # GET /api/mod
 app.include_router(predict.router, prefix=settings.API_V1_STR)    # POST /api/predict, GET /api/predict/status
 
 
+@app.on_event("startup")
+def startup_optimization():
+    """Optimizes CPU thread allocation and warms up the primary research model."""
+    import torch
+    # Crucial for cloud containers (Render/Docker) to prevent CPU thread thrashing
+    torch.set_num_threads(2)
+
+    # Preload the primary proposed architecture into memory
+    try:
+        from .services.inference import inference_service
+        inference_service.get_or_load_model("attention_fusion", seed=42)
+    except Exception as exc:
+        print(f"[WARMUP] Could not pre-warm model: {exc}")
+
+
 @app.get("/")
 def root():
     """Service root providing discovery information."""

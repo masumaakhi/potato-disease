@@ -105,6 +105,7 @@ class GradCAMService:
         # 1. Validate image and prepare preprocessed input tensor
         pil_image = validate_and_load_image(image)
         input_tensor = preprocess_image(pil_image, device=self.device)
+        input_tensor.requires_grad_(True)
 
         # 2. Retrieve model checkpoint and ensure eval mode
         model = inference_service.get_or_load_model(model_id, seed=seed)
@@ -225,10 +226,10 @@ class GradCAMService:
         }
 
     @staticmethod
-    def _pil_to_base64_jpeg(img: Image.Image, quality: int = 90) -> str:
+    def _pil_to_base64_jpeg(img: Image.Image, quality: int = 75) -> str:
         """Encodes PIL Image into Base64 JPEG string."""
         buffer = io.BytesIO()
-        img.save(buffer, format="JPEG", quality=quality)
+        img.save(buffer, format="JPEG", quality=quality, optimize=True)
         return base64.b64encode(buffer.getvalue()).decode("utf-8")
 
 

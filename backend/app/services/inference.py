@@ -114,6 +114,9 @@ class ModelInferenceService:
                 num_classes=len(RESEARCH_CLASSES)
             )
             model.eval()
+            # Freeze parameters: saves RAM and speeds up execution by avoiding gradient buffers
+            for param in model.parameters():
+                param.requires_grad = False
             self.loaded_models[cache_key] = model
             return model
         except Exception as exc:
@@ -130,7 +133,7 @@ class ModelInferenceService:
     ) -> PredictionResult:
         """
         Executes prediction on an input PIL image using the loaded model.
-        Evaluation mode and torch.no_grad() are strictly enforced.
+        Evaluation mode and torch.inference_mode() are strictly enforced for speed.
         """
         model = self.get_or_load_model(model_id, seed=seed)
 
@@ -141,7 +144,7 @@ class ModelInferenceService:
         attention_weights_obj: Optional[AttentionWeights] = None
         attention_data: Optional[Dict[str, Any]] = None
 
-        with torch.no_grad():
+        with torch.inference_mode():
             if model_id == "attention_fusion":
                 logits, attn_weights = model(input_tensor, return_attention=True)
                 attn_cnn = float(attn_weights[0, 0].item())
