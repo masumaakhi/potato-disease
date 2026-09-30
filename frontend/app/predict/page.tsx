@@ -90,7 +90,7 @@ export default function PredictPage() {
             <>
               <span className="h-2 w-2 rounded-full bg-red-500" />
               <WifiOff className="h-3.5 w-3.5 text-red-500" />
-              <span className="text-red-600 dark:text-red-300 font-mono text-[11px] font-medium">Backend Offline (Port 8000)</span>
+              <span className="text-red-600 dark:text-red-300 font-mono text-[11px] font-medium">Backend Offline</span>
             </>
           ) : (
             <span className="text-zinc-500 font-mono text-[11px]">Checking Backend...</span>
