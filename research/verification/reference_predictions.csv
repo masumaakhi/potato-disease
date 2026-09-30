@@ -1,0 +1,1 @@
+image_name,model,reference_predicted_class,probability_early_blight,probability_late_blight,probability_healthy,reference_cnn_weight,reference_vit_weight

@@ -1,0 +1,41 @@
+{
+  "status": "REFERENCE_DATA_MISSING",
+  "verified": false,
+  "notice": "No reference predictions found in reference CSV.\nDo NOT invent or hardcode fake predictions.\nExport genuine predictions from the Colab research pipeline using:\npython research/verification/export_reference_predictions_colab.py",
+  "error": null,
+  "overall": {
+    "total_comparisons": 0,
+    "prediction_matches": 0,
+    "prediction_mismatches": 0,
+    "match_rate": 0.0
+  },
+  "models": {
+    "efficientnet_b0": {
+      "tested": 0,
+      "matches": 0,
+      "mismatches": 0,
+      "failures": 0
+    },
+    "deit_tiny": {
+      "tested": 0,
+      "matches": 0,
+      "mismatches": 0,
+      "failures": 0
+    },
+    "cnn_vit_concat": {
+      "tested": 0,
+      "matches": 0,
+      "mismatches": 0,
+      "failures": 0
+    },
+    "attention_fusion": {
+      "tested": 0,
+      "matches": 0,
+      "mismatches": 0,
+      "failures": 0
+    }
+  },
+  "mismatches": [],
+  "missing_images": [],
+  "failed_requests": []
+}

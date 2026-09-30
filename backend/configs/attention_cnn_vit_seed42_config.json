@@ -1,0 +1,43 @@
+{
+  "created_at": "2026-08-06T18:43:48.748905",
+  "model_name": "Attention_Guided_CNN_ViT",
+  "cnn_branch": "EfficientNet-B0",
+  "vit_branch": "deit_tiny_patch16_224.fb_in1k",
+  "fusion_method": "Learnable sample-wise branch attention",
+  "attention_description": "Softmax-normalized CNN and ViT branch weights computed separately for every input image",
+  "seed": 42,
+  "class_names": [
+    "Early_Blight",
+    "Late_Blight",
+    "Healthy"
+  ],
+  "image_size": 224,
+  "resize_size": 256,
+  "batch_size": 8,
+  "num_workers": 2,
+  "optimizer": "AdamW",
+  "learning_rate": 3e-05,
+  "weight_decay": 0.0001,
+  "loss": "Weighted CrossEntropyLoss",
+  "projection_dim": 256,
+  "classifier_hidden_dim": 256,
+  "dropout": 0.35,
+  "cnn_feature_dim": 1280,
+  "vit_feature_dim": 192,
+  "max_epochs": 25,
+  "early_stopping_patience": 6,
+  "best_epoch": 8,
+  "best_validation_macro_f1": 1.0,
+  "total_parameters": 10109249,
+  "trainable_parameters": 10109249,
+  "internal_test_metrics": {
+    "accuracy": 1.0,
+    "macro_precision": 1.0,
+    "macro_recall": 1.0,
+    "macro_f1": 1.0,
+    "loss": 4.636866295794544e-05
+  },
+  "mean_internal_cnn_attention": 0.21594545245170593,
+  "mean_internal_vit_attention": 0.7840545773506165,
+  "external_test_used": false
+}
