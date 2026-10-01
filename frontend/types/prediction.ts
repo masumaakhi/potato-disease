@@ -61,6 +61,9 @@ export interface PredictionResult {
   attention_weights_available: boolean;
   gradcam_image_base64?: string | null;
   gradcam_view?: GradCAMViewData | null;
+  specimen_warning?: string | null;
+  is_likely_potato_leaf?: boolean;
+  specimen_status?: "optimal" | "synthetic_advisory" | "low_confidence_advisory" | string;
 }
 
 export interface ModelInfo {

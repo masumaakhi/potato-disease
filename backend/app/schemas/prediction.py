@@ -68,6 +68,9 @@ class PredictionResult(BaseModel):
     attention_weights_available: bool = False
     gradcam_image_base64: Optional[str] = None
     gradcam_view: Optional[GradCAMResult] = None
+    specimen_warning: Optional[str] = None
+    is_likely_potato_leaf: bool = True
+    specimen_status: str = "optimal"
 
 
 class ModelInfo(BaseModel):

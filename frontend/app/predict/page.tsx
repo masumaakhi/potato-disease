@@ -10,7 +10,7 @@ import { AttentionWeights } from "@/components/prediction/attention-weights";
 import { GradCAMViewer } from "@/components/prediction/gradcam-viewer";
 import { PredictionResult } from "@/types/prediction";
 import { runPrediction, fetchHealth } from "@/lib/api";
-import { Play, AlertCircle, Wifi, WifiOff, Loader2 } from "lucide-react";
+import { Play, AlertCircle, AlertTriangle, Wifi, WifiOff, Loader2 } from "lucide-react";
 
 export default function PredictPage() {
   const [selectedModelId, setSelectedModelId] = useState<string>(RESEARCH_MODELS[0].id);
@@ -189,6 +189,26 @@ export default function PredictPage() {
                 </p>
               </div>
             </div>
+
+            {/* Specimen Quality & Out-of-Distribution (OOD) Advisory Banner */}
+            {result.specimen_warning && (
+              <div className="flex items-start gap-3.5 rounded-xl border border-amber-300 dark:border-amber-700/60 bg-amber-50/90 dark:bg-amber-950/30 p-4 text-xs text-amber-900 dark:text-amber-200 shadow-sm transition-all duration-300">
+                <AlertTriangle className="h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-sm text-amber-950 dark:text-amber-100">
+                      Specimen Suitability Advisory
+                    </span>
+                    <span className="rounded-full bg-amber-200/80 dark:bg-amber-800/60 px-2 py-0.5 text-[10px] font-semibold text-amber-800 dark:text-amber-200 uppercase tracking-wider">
+                      Out of Distribution
+                    </span>
+                  </div>
+                  <p className="text-amber-800 dark:text-amber-300/90 leading-relaxed font-sans">
+                    {result.specimen_warning}
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Upper Results Row: Prediction Card & Probability Chart */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">

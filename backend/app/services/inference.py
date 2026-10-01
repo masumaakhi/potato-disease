@@ -18,6 +18,7 @@ from ..models.deit import load_deit_tiny
 from ..models.concat_fusion import load_concat_fusion
 from ..models.attention_fusion import load_attention_fusion
 from .preprocessing import preprocess_image
+from .specimen_validator import evaluate_specimen_suitability
 
 # Exact class mapping from dataloader_preprocessing_config.json
 RESEARCH_CLASSES = [
@@ -210,6 +211,9 @@ class ModelInferenceService:
                 gradcam_res = None
                 gradcam_b64 = None
 
+        # Specimen Suitability & Out-of-Distribution Quality Check
+        specimen_check = evaluate_specimen_suitability(image, top_confidence=float(conf.item()))
+
         return PredictionResult(
             model_name=MODEL_DISPLAY_NAMES.get(model_id, model_id),
             model_id=model_id,
@@ -223,7 +227,10 @@ class ModelInferenceService:
             gradcam_available=gradcam_available,
             attention_weights_available=(attention_weights_obj is not None),
             gradcam_image_base64=gradcam_b64,
-            gradcam_view=gradcam_res
+            gradcam_view=gradcam_res,
+            specimen_warning=specimen_check.get("specimen_warning"),
+            is_likely_potato_leaf=specimen_check.get("is_likely_potato_leaf", True),
+            specimen_status=specimen_check.get("specimen_status", "optimal")
         )
 
 
