@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { Upload, Image as ImageIcon, X, Sparkles, Check } from "lucide-react";
+import { Upload, Image as ImageIcon, X, Sparkles, Check, AlertTriangle } from "lucide-react";
 import { SAMPLE_LEAVES, SampleLeaf } from "@/data/samples";
 
 interface ImageUploaderProps {
@@ -22,6 +22,24 @@ export function ImageUploader({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedSampleId, setSelectedSampleId] = useState<string | null>(null);
+  const [aspectNotice, setAspectNotice] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (!previewUrl) {
+      setAspectNotice(null);
+      return;
+    }
+    const img = new window.Image();
+    img.onload = () => {
+      const ratio = img.width / img.height;
+      if (ratio < 0.52 || ratio > 2.3) {
+        setAspectNotice("⚠️ এটি মোবাইল ডিসপ্লের স্ক্রিনশট বা অতিরিক্ত লম্বাটে ছবি বলে মনে হচ্ছে। নিখুঁত রোগ নির্ণয়ের জন্য পুরো স্ক্রিনশট না দিয়ে ক্রপ করে শুধু আলুর পাতার ক্লোজ-আপ ছবি দেওয়ার পরামর্শ দেওয়া হচ্ছে।");
+      } else {
+        setAspectNotice(null);
+      }
+    };
+    img.src = previewUrl;
+  }, [previewUrl]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -130,6 +148,20 @@ export function ImageUploader({
           </div>
         )}
       </div>
+
+      {aspectNotice && (
+        <div className="flex items-start gap-2.5 rounded-lg border border-amber-300 dark:border-amber-700/60 bg-amber-50/90 dark:bg-amber-950/40 p-3 text-xs text-amber-900 dark:text-amber-200 animate-in fade-in duration-200">
+          <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
+          <div className="space-y-0.5">
+            <span className="font-semibold block text-[11px] text-amber-950 dark:text-amber-100">
+              নমুনার অনুপাত সতর্কতা (Aspect Ratio Notice)
+            </span>
+            <p className="text-[11px] text-amber-800 dark:text-amber-300/90 leading-relaxed font-sans">
+              {aspectNotice}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Quick Select Research Samples */}
       <div>

@@ -10,7 +10,7 @@ import { AttentionWeights } from "@/components/prediction/attention-weights";
 import { GradCAMViewer } from "@/components/prediction/gradcam-viewer";
 import { PredictionResult } from "@/types/prediction";
 import { runPrediction, fetchHealth } from "@/lib/api";
-import { Play, AlertCircle, AlertTriangle, Wifi, WifiOff, Loader2 } from "lucide-react";
+import { Play, AlertCircle, AlertTriangle, Wifi, WifiOff, Loader2, Check } from "lucide-react";
 
 export default function PredictPage() {
   const [selectedModelId, setSelectedModelId] = useState<string>(RESEARCH_MODELS[0].id);
@@ -130,11 +130,78 @@ export default function PredictPage() {
           </div>
 
           {error && (
-            <div className="flex items-start gap-2 rounded-xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950/30 p-3.5 text-xs text-red-700 dark:text-red-300">
-              <AlertCircle className="h-4 w-4 shrink-0 text-red-500 mt-0.5" />
-              <div className="space-y-1">
-                <span className="font-semibold block">Diagnosis Error</span>
-                <span className="text-zinc-600 dark:text-zinc-400">{error}</span>
+            <div className="rounded-xl border border-red-200 dark:border-red-900/60 bg-red-50/95 dark:bg-red-950/40 p-4 text-xs text-red-900 dark:text-red-200 shadow-sm transition-all duration-200 space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="rounded-full bg-red-100 dark:bg-red-900/60 p-1.5 text-red-600 dark:text-red-400 shrink-0 mt-0.5">
+                  <AlertCircle className="h-4 w-4" />
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-sm text-red-950 dark:text-red-100">
+                      নমুনা বা ডায়াগনসিস সমস্যা (Specimen / Execution Notice)
+                    </span>
+                  </div>
+                  <div className="text-red-800 dark:text-red-300/90 leading-relaxed font-sans">
+                    {error.includes("NetworkError") || error.includes("Failed to fetch") ? (
+                      <>
+                        <p className="font-medium text-red-900 dark:text-red-200 mb-1">
+                          ভুল বা অপ্রাসঙ্গিক ইমেজ সনাক্তকরণ:
+                        </p>
+                        <p>
+                          আপনার আপলোড করা ছবিটি হয়তো একটি মোবাইল স্ক্রিনশট বা কোনো আলুর পাতার ছবি নয়। এই রিসার্চ এআই মডেলটি শুধুমাত্র আলুর পাতার ৩টি অবস্থার (Early Blight, Late Blight, Healthy) ওপর ক্যালিব্রেটেড। এছাড়াও ক্লাউড ব্যাকএন্ডটি স্লিপ থেকে সচল হতে কয়েক সেকেন্ড সময় নিতে পারে।
+                        </p>
+                      </>
+                    ) : (
+                      <p>{error}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Actionable guidance box */}
+              <div className="rounded-lg border border-red-200/80 dark:border-red-900/40 bg-white/70 dark:bg-zinc-900/50 p-3 text-[11px] text-zinc-700 dark:text-zinc-300 space-y-2">
+                <p className="font-semibold text-zinc-900 dark:text-zinc-200">
+                  💡 আপনার ভুল কোথায় এবং কীভাবে সমাধান করবেন:
+                </p>
+                <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400">
+                  <li>
+                    <strong>ছবি ক্রপ করুন:</strong> পুরো মোবাইল ডিসপ্লের স্ক্রিনশট না দিয়ে, শুধুমাত্র গাছের পাতাটির অংশ ক্রপ করে দিন।
+                  </li>
+                  <li>
+                    <strong>আসল পাতা দিন:</strong> পাতার ওপর আলো ভালো থাকলে এবং ক্যামেরা কাছে রেখে ছবি তুললে মডেল নিখুঁত রোগ চিহ্নিত করতে পারে।
+                  </li>
+                  <li>
+                    <strong>সিস্টেম পরীক্ষা করতে:</strong> নিচে দেওয়া ৩টি নমুনা পাতার (Early Blight / Late Blight / Healthy) যেকোনো একটিতে ক্লিক করে এখনই সিস্টেমটি টেস্ট করে দেখতে পারেন।
+                  </li>
+                </ul>
+
+                <div className="flex flex-wrap items-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      setError(null);
+                      try {
+                        const res = await fetch("/samples/sample_healthy.jpg");
+                        const blob = await res.blob();
+                        const file = new File([blob], "sample_healthy.jpg", { type: "image/jpeg" });
+                        handleImageSelected(file);
+                      } catch (e) {
+                        console.error(e);
+                      }
+                    }}
+                    className="inline-flex items-center gap-1 rounded-md bg-emerald-600 px-2.5 py-1 text-[11px] font-medium text-white hover:bg-emerald-700 transition"
+                  >
+                    <Check className="h-3 w-3" />
+                    <span>নমুনা পাতা দিয়ে টেস্ট করুন</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleClearImage}
+                    className="inline-flex items-center gap-1 rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-2.5 py-1 text-[11px] font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700/60 transition"
+                  >
+                    <span>ছবি পরিবর্তন করুন</span>
+                  </button>
+                </div>
               </div>
             </div>
           )}
