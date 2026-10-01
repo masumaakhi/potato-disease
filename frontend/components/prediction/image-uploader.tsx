@@ -33,7 +33,7 @@ export function ImageUploader({
     img.onload = () => {
       const ratio = img.width / img.height;
       if (ratio < 0.52 || ratio > 2.3) {
-        setAspectNotice("⚠️ এটি মোবাইল ডিসপ্লের স্ক্রিনশট বা অতিরিক্ত লম্বাটে ছবি বলে মনে হচ্ছে। নিখুঁত রোগ নির্ণয়ের জন্য পুরো স্ক্রিনশট না দিয়ে ক্রপ করে শুধু আলুর পাতার ক্লোজ-আপ ছবি দেওয়ার পরামর্শ দেওয়া হচ্ছে।");
+        setAspectNotice("The uploaded image appears to be a mobile screenshot or disproportionate image. For accurate disease diagnosis, please crop or upload a direct close-up photo of a potato leaf.");
       } else {
         setAspectNotice(null);
       }
@@ -154,7 +154,7 @@ export function ImageUploader({
           <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
           <div className="space-y-0.5">
             <span className="font-semibold block text-[11px] text-amber-950 dark:text-amber-100">
-              নমুনার অনুপাত সতর্কতা (Aspect Ratio Notice)
+              Specimen Aspect Ratio Notice
             </span>
             <p className="text-[11px] text-amber-800 dark:text-amber-300/90 leading-relaxed font-sans">
               {aspectNotice}
