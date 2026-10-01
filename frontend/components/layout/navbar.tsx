@@ -28,9 +28,6 @@ export function Navbar() {
             <span className="font-semibold text-sm sm:text-base text-zinc-900 dark:text-zinc-100 whitespace-nowrap">
               Potato Disease AI
             </span>
-            <span className="ml-1.5 sm:ml-2 rounded border border-emerald-500/20 bg-emerald-500/10 dark:bg-zinc-800 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-medium text-emerald-700 dark:text-emerald-400">
-              Research Demo
-            </span>
           </div>
         </Link>
 

@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Sparkles, Activity, FileText } from "lucide-react";
+import { ArrowRight, Sparkles, Activity, FileText, UploadCloud } from "lucide-react";
 
 export function Hero() {
   return (
@@ -37,8 +37,8 @@ export function Hero() {
               href="/predict"
               className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 dark:bg-emerald-500 px-6 py-3 text-sm font-semibold text-white dark:text-zinc-950 transition hover:bg-emerald-700 dark:hover:bg-emerald-400 shadow-lg shadow-emerald-950/20"
             >
-              <Activity className="h-4 w-4" />
-              <span>Launch Research Model Demo</span>
+              <UploadCloud className="h-4 w-4" />
+              <span>Upload & Diagnose Leaf</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
 
